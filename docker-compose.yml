@@ -1,13 +1,15 @@
 services:    
-  redis:
-    image: redis/redis-stack-server
+  redis_app:
+    image: redis
     ports:
       - "6379:6379"
-
   backend:
     depends_on:
-      - redis
-    build: .
+      - redis_app
+    build: ./app
     ports:
       - "8000:8000"
+  frontend:
+    build: ./template
+    ports:
       - "9000:9000"

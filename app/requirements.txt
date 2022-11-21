@@ -1,0 +1,9 @@
+asyncio
+asyncio-redis
+broadcaster
+fastapi
+pydantic
+starlette
+uvicorn
+websockets
+wsproto

@@ -1,4 +1,5 @@
 import asyncio
+
 from broadcaster import Broadcast
 from fastapi import FastAPI, WebSocket
 from pydantic import BaseModel
@@ -6,12 +7,14 @@ from starlette.websockets import WebSocketDisconnect
 
 
 app = FastAPI()
-broadcast = Broadcast("redis://localhost:6379")
+broadcast = Broadcast("redis://redis_app:6379")
 CHANNEL = "CHAT"
+
 
 class MessageEvent(BaseModel):
     username: str
     message: str
+
 
 async def receive_message(websocket: WebSocket, username: str):
     async with broadcast.subscribe(channel=CHANNEL) as subscriber:
@@ -57,7 +60,3 @@ async def startup():
 @app.on_event("shutdown")
 async def shutdown():
     await broadcast.disconnect()
-
-
-if __name__ == "__main__":
-    uvicorn.run(app, port=8000)    
